@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta name="theme-color" content="#f8cfe0" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <title>สมเจตน์ ♡ จารุวรรณ</title>
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;font-family:Tahoma,"Noto Sans Thai",Arial,sans-serif}
+    :root{
+      --pink:#f49abb;--pink2:#ffd7e6;--blue:#bfe6ff;--blue2:#e9f7ff;
+      --ink:#744d60;--deep:#d95589;--white:#fff;--glass:rgba(255,255,255,.78)
+    }
+    body{
+      min-height:100vh;overflow:hidden;color:var(--ink);
+      background:
+        radial-gradient(circle at 15% 12%,rgba(255,255,255,.95),transparent 18%),
+        radial-gradient(circle at 85% 16%,rgba(211,239,255,.9),transparent 24%),
+        radial-gradient(circle at 80% 88%,rgba(255,220,234,.95),transparent 22%),
+        linear-gradient(145deg,#fffafd,#ffe9f1 48%,#e9f7ff);
+    }
+    button,input{font:inherit}
+    button{-webkit-tap-highlight-color:transparent}
+    .blob{position:fixed;border-radius:50%;filter:blur(26px);opacity:.42;pointer-events:none}
+    .b1{width:280px;height:280px;background:#ffc7dc;left:-100px;top:-90px}
+    .b2{width:300px;height:300px;background:#bfe6ff;right:-120px;bottom:-90px}
+    .b3{width:180px;height:180px;background:#fff0b8;right:10%;top:38%}
+
+    .scene{
+      position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+      padding:18px;opacity:0;transform:scale(.985);pointer-events:none;
+      transition:.55s ease;z-index:5;overflow:auto
+    }
+    .scene.active{opacity:1;transform:scale(1);pointer-events:auto}
+    .card{
+      width:min(94vw,650px);background:var(--glass);border:1px solid rgba(255,255,255,.95);
+      border-radius:34px;box-shadow:0 28px 80px rgba(114,76,93,.16);
+      backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+      padding:34px 26px;text-align:center;position:relative;overflow:hidden
+    }
+    .card::after{
+      content:"";position:absolute;width:170px;height:170px;border-radius:50%;
+      background:rgba(255,255,255,.43);right:-72px;top:-102px
+    }
+    .badge{
+      display:inline-flex;gap:8px;align-items:center;padding:8px 13px;border-radius:999px;
+      background:#fff2f7;border:1px solid #ffd4e3;color:#cf5b87;font-weight:800;font-size:13px
+    }
+    .hero{font-size:82px;line-height:1;margin-top:18px;animation:bob 2.5s ease-in-out infinite;
+      filter:drop-shadow(0 10px 16px rgba(219,83,134,.13))}
+    @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(2deg)}}
+    h1{margin:16px 0 0;color:var(--deep);font-size:clamp(29px,7vw,46px);line-height:1.25}
+    h2{color:var(--deep)}
+    .lead{max-width:540px;margin:14px auto 0;line-height:1.85;font-size:clamp(16px,4vw,19px)}
+    .tiny{margin-top:12px;font-size:12px;opacity:.67}
+    .primary{
+      border:0;border-radius:999px;padding:15px 26px;min-width:195px;margin-top:22px;
+      color:#fff;font-weight:900;font-size:17px;cursor:pointer;
+      background:linear-gradient(135deg,#ef5e93,#f69ebd);
+      box-shadow:0 13px 30px rgba(214,78,128,.22);transition:.18s ease
+    }
+    .primary:hover{transform:scale(1.045)}
+
+    /* lock */
+    .lock-icon{font-size:72px;margin-top:16px}
+    .code-row{margin:22px auto 0;max-width:340px}
+    .code-row input{
+      width:100%;text-align:center;padding:15px 16px;border:2px solid #ffd3e2;border-radius:18px;
+      outline:none;background:rgba(255,255,255,.86);font-size:20px;letter-spacing:3px;color:#88546a
+    }
+    .code-row input:focus{border-color:#9fd8fb;box-shadow:0 0 0 4px rgba(191,230,255,.34)}
+    .hint{margin-top:10px;font-size:13px;color:#a46a82}
+    .error{min-height:22px;margin-top:10px;color:#d95378;font-weight:800;font-size:13px}
+    .shake{animation:shake .35s ease}
+    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+    /* memories */
+    .memory-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:23px auto 0;max-width:560px}
+    .memory{padding:15px;border-radius:21px;background:rgba(255,255,255,.72);border:1px solid #fff}
+    .memory b{display:block;color:#d45787;margin-top:6px}
+    .memory span{display:block;font-size:12px;margin-top:5px;opacity:.76;line-height:1.45}
+
+    /* envelope */
+    .envelope-wrap{width:235px;height:152px;position:relative;margin:24px auto 4px;cursor:pointer;filter:drop-shadow(0 16px 22px rgba(185,78,116,.16))}
+    .envelope{position:absolute;inset:0;border-radius:15px;background:#aedaF5;overflow:hidden}
+    .envelope::before{
+      content:"";position:absolute;left:0;bottom:0;width:0;height:0;
+      border-left:117.5px solid transparent;border-right:117.5px solid transparent;border-bottom:80px solid #89cfee
+    }
+    .envelope::after{
+      content:"";position:absolute;left:0;top:0;width:0;height:0;
+      border-left:117.5px solid transparent;border-right:117.5px solid transparent;border-top:88px solid #cdeeff;
+      transform-origin:top;transition:.6s ease;z-index:3
+    }
+    .seal{position:absolute;z-index:4;left:50%;top:58%;transform:translate(-50%,-50%);font-size:35px;transition:.45s ease}
+    .envelope-wrap.open .envelope::after{transform:rotateX(180deg)}
+    .envelope-wrap.open .seal{opacity:0;transform:translate(-50%,-50%) scale(.5)}
+
+    /* letter */
+    .paper{
+      width:min(94vw,680px);max-height:86vh;overflow:auto;padding:31px 26px;
+      background:rgba(255,255,255,.92);border-radius:30px;border:1px solid #fff;
+      box-shadow:0 28px 80px rgba(114,76,93,.16)
+    }
+    .paper h2{text-align:center;font-size:clamp(26px,6vw,38px);margin:0 0 20px}
+    .paper p{font-size:16px;line-height:1.95;margin:0 0 16px}
+    .signature{text-align:right;color:#c85382;font-weight:800;line-height:1.65;margin-top:19px}
+
+    /* question */
+    .question-card{min-height:405px;overflow:visible}
+    .question{font-size:clamp(29px,7vw,43px);font-weight:900;color:#d84d82;margin-top:13px}
+    .subquestion{margin-top:12px;line-height:1.8}
+    .button-zone{height:165px;position:relative;margin-top:20px}
+    #yesBtn,#noBtn{
+      border:0;border-radius:999px;min-width:180px;padding:15px 22px;font-weight:900;font-size:17px;cursor:pointer;
+      box-shadow:0 12px 28px rgba(211,72,124,.18)
+    }
+    #yesBtn{
+      position:absolute;left:50%;top:12px;transform:translateX(-110%);
+      background:linear-gradient(135deg,#ef4f8b,#f88fb6);color:#fff;z-index:3;transition:transform .18s ease
+    }
+    #noBtn{
+      position:absolute;left:50%;top:12px;transform:translateX(10%);
+      background:#fff;color:#d04f80;border:2px solid #ffd1e1;z-index:30;
+      transition:left .16s ease,top .16s ease,transform .16s ease
+    }
+    #tease{min-height:23px;color:#bd6687;font-size:14px;font-weight:800}
+
+    /* success */
+    .success{
+      width:min(94vw,660px);padding:39px 26px 34px;border-radius:36px;text-align:center;
+      background:rgba(255,255,255,.86);border:1px solid #fff;box-shadow:0 28px 85px rgba(139,56,91,.2);
+      animation:pop .55s cubic-bezier(.2,1.3,.45,1)
+    }
+    @keyframes pop{from{opacity:0;transform:scale(.64) translateY(16px)}to{opacity:1;transform:scale(1)}}
+    .success .emoji{font-size:92px}
+    .success h2{font-size:clamp(30px,7vw,46px);margin:12px 0 0}
+    .success p{font-size:clamp(16px,4vw,20px);line-height:1.85}
+    .datebox{
+      max-width:440px;margin:20px auto 0;padding:15px 18px;border-radius:22px;
+      background:linear-gradient(135deg,#fff0f6,#edf9ff);color:#cc4e7f;font-weight:900;line-height:1.6
+    }
+    .music-note{margin-top:14px;font-size:13px;color:#a26c80}
+
+    /* music pill */
+    #musicPill{
+      position:fixed;right:14px;bottom:14px;z-index:80;display:none;align-items:center;gap:8px;
+      padding:10px 13px;border-radius:999px;background:rgba(255,255,255,.87);border:1px solid #fff;
+      box-shadow:0 10px 28px rgba(111,76,92,.14);font-size:12px;color:#945c73;
+      backdrop-filter:blur(12px);cursor:pointer;user-select:none
+    }
+
+    /* fx */
+    .floaty,.confetti,.spark{position:fixed;pointer-events:none}
+    .floaty{z-index:1;bottom:-40px;opacity:0;animation:rise linear forwards}
+    @keyframes rise{0%{transform:translateY(0) rotate(0) scale(.7);opacity:0}12%{opacity:.7}100%{transform:translateY(-115vh) rotate(340deg) scale(1.15);opacity:0}}
+    .confetti{z-index:90;top:-30px;animation:fall linear forwards}
+    @keyframes fall{to{transform:translateY(112vh) rotate(720deg);opacity:.72}}
+    .spark{z-index:95;width:8px;height:8px;border-radius:50%;background:#ff79aa;box-shadow:0 0 10px rgba(255,121,170,.7);animation:burst .9s ease-out forwards}
+    @keyframes burst{to{transform:translate(var(--x),var(--y)) scale(.2);opacity:0}}
+
+    @media(max-width:620px){
+      .card{padding:29px 18px;border-radius:28px}
+      .hero{font-size:73px}
+      .memory-row{grid-template-columns:1fr}
+      .paper{padding:26px 20px}
+      .question-card{min-height:485px}
+      .button-zone{height:210px}
+      #yesBtn{left:50%;top:12px;transform:translateX(-50%)}
+      #noBtn{left:50%;top:84px;transform:translateX(-50%)}
+      #yesBtn,#noBtn{min-width:195px}
+    }
+  </style>
+</head>
+<body>
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+
+  <!-- 1: password -->
+  <section class="scene active" id="lockScene">
+    <div class="card" id="lockCard">
+      <div class="badge">🔐 พื้นที่ลับสำหรับคนพิเศษ</div>
+      <div class="lock-icon">💌</div>
+      <h1>มีเรื่องสำคัญอยากบอกเธอ</h1>
+      <p class="lead">ก่อนจะเข้าไป ขอเช็กก่อนว่าเป็น <b>จารุวรรณ</b> ตัวจริงรึเปล่า 😳</p>
+      <div class="code-row">
+        <input id="codeInput" type="password" inputmode="numeric" autocomplete="off" placeholder="••••••••" maxlength="12" aria-label="รหัสผ่าน">
+      </div>
+      <div class="hint">คำใบ้: วันสำคัญของเธอ 💌</div>
+      <div class="error" id="lockError"></div>
+      <button class="primary" id="unlockBtn">เปิดความลับ 💗</button>
+    </div>
+  </section>
+
+  <!-- 2: intro -->
+  <section class="scene" id="introScene">
+    <div class="card">
+      <div class="badge">🩷 ถึง จารุวรรณ คนเดียว</div>
+      <div class="hero">🐻‍❄️💗🐰</div>
+      <h1>ดีใจที่เธอเข้ามานะ</h1>
+      <p class="lead">
+        ตั้งแต่วันที่เราได้รู้จักกัน เรื่องธรรมดาหลาย ๆ อย่างก็ดูน่ารักขึ้นแบบแปลก ๆ<br>
+        และวันนี้ <b style="color:#d95788">สมเจตน์</b> มีบางอย่างที่ตั้งใจทำให้เธอโดยเฉพาะเลย
+      </p>
+      <div class="memory-row">
+        <div class="memory">🌷<b>7 พฤษภาคม 2569</b><span>วันที่เราเริ่มรู้จักกัน</span></div>
+        <div class="memory">✨<b>10 กรกฎาคม 2569</b><span>วันที่เราได้เจอกันครั้งแรก</span></div>
+      </div>
+      <button class="primary" id="letterBtn">มีจดหมายให้เธอ 💌</button>
+    </div>
+  </section>
+
+  <!-- 3: envelope -->
+  <section class="scene" id="envelopeScene">
+    <div class="card">
+      <div class="badge">✉️ จดหมายฉบับเล็ก ๆ</div>
+      <h1 style="font-size:clamp(27px,6vw,41px)">กดที่ซองจดหมายดูสิ</h1>
+      <p class="lead">คนเขียนเขินนิดหน่อย...แต่ตั้งใจเขียนมากนะ 😳</p>
+      <div class="envelope-wrap" id="envelope">
+        <div class="envelope"></div><div class="seal">💖</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4: letter -->
+  <section class="scene" id="letterScene">
+    <div class="paper">
+      <h2>ถึง จารุวรรณ 🌸</h2>
+      <p>
+        ตั้งแต่ได้รู้จักเธอ เราก็เริ่มมีคนหนึ่งที่อยากเล่าเรื่องในแต่ละวันให้ฟัง
+        มีคนหนึ่งที่เวลาเห็นชื่อเด้งขึ้นมาก็เผลอยิ้ม และมีคนหนึ่งที่ทำให้วันธรรมดา ๆ
+        ดูน่ารักขึ้นได้แบบไม่ต้องพยายามเลย
+      </p>
+      <p>
+        เราชอบเวลาที่ได้คุยกับเธอ ชอบเวลาที่เธอเป็นตัวเอง
+        แล้วก็ชอบความรู้สึกเล็ก ๆ ที่เกิดขึ้นทุกครั้งเวลาเราได้อยู่ใกล้กัน
+        ถ้าถามว่าเธอพิเศษตรงไหน...ก็คงตอบง่าย ๆ ว่า
+        <b style="color:#d95589">“พิเศษตรงที่เป็นเธอนี่แหละ”</b> 💗
+      </p>
+      <p>
+        เราไม่รู้หรอกว่าต่อจากนี้จะมีเรื่องอะไรให้เจอบ้าง
+        แต่ถ้าเป็นไปได้ เราอยากมีสิทธิ์คอยถามว่า “วันนี้เป็นยังไงบ้าง”
+        อยากพาไปกินของอร่อย ๆ อยากได้อยู่ข้าง ๆ ตอนเธอเหนื่อย
+        และอยากเป็นอีกหนึ่งเหตุผลที่ทำให้เธอยิ้มได้บ่อย ๆ
+      </p>
+      <p>
+        เขียนมาถึงตรงนี้แล้วก็เขินเหมือนกันนะ 😳
+        แต่มีคำถามหนึ่งที่เราอยากถามแบบจริงจังที่สุด...
+      </p>
+      <div class="signature">จาก สมเจตน์<br>คนที่แอบยิ้มตอนทำเว็บนี้ให้เธอ 🤍</div>
+      <div style="text-align:center"><button class="primary" id="questionBtn">ไปดูคำถามนั้น 💞</button></div>
+    </div>
+  </section>
+
+  <!-- 5: question -->
+  <section class="scene" id="questionScene">
+    <div class="card question-card">
+      <div class="badge">💗 คำถามสำคัญที่สุด</div>
+      <div class="hero" style="font-size:72px">🥺👉👈</div>
+      <div class="question">ให้เราเป็นคนพิเศษของเธอได้ไหม?</div>
+      <div class="subquestion">
+        ตั้งแต่ <b style="color:#d95589">6 กันยายน 2569</b> เป็นต้นไป<br>
+        ขอให้คำว่า “เรา” หมายถึง <b style="color:#d95589">สมเจตน์กับจารุวรรณ</b> ได้ไหม 💕
+      </div>
+      <div class="button-zone">
+        <button id="yesBtn">ได้สิ 💖</button>
+        <button id="noBtn">ยังไม่เอา 😝</button>
+      </div>
+      <div id="tease">เลือกดี ๆ น้าาา 🌷</div>
+    </div>
+  </section>
+
+  <!-- 6: success -->
+  <section class="scene" id="successScene">
+    <div class="success">
+      <div class="emoji">🥰💖🎉</div>
+      <h2>เย้! เราเป็นแฟนกันแล้วนะ</h2>
+      <p>
+        ขอบคุณนะจารุวรรณ ที่ให้สมเจตน์ได้เป็นคนพิเศษของเธอ 💗<br>
+        ต่อจากนี้ฝากรอยยิ้ม ความห่วงใย และหัวใจดวงนี้ไว้กับเธอด้วยนะ
+      </p>
+      <div class="datebox">💞 วันแรกของคำว่า “เรา”<br>6 กันยายน 2569</div>
+      <div class="music-note">🎵 เพลงรักบรรเลง “Our Little Day” กำลังเล่นอยู่เบา ๆ</div>
+      <div class="tiny">สมเจตน์ ♡ จารุวรรณ</div>
+    </div>
+  </section>
+
+  <div id="musicPill" role="button" tabindex="0" title="กดเพื่อเปิด/ปิดเพลง">🎵 เพลงรัก: เปิดอยู่</div>
+
+<script>
+  const PASSWORD_SHA256 = "b051cc8bb280ca71e5cf3194cfeef21badb124f6e58494bb8e8afb8c9056b208";
+
+  const scenes = [...document.querySelectorAll(".scene")];
+  function showScene(id){
+    scenes.forEach(s=>s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    window.scrollTo(0,0);
+  }
+
+  async function sha256(text){
+    const data = new TextEncoder().encode(text);
+    const digest = await crypto.subtle.digest("SHA-256", data);
+    return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,"0")).join("");
+  }
+
+  const codeInput = document.getElementById("codeInput");
+  const lockError = document.getElementById("lockError");
+  const lockCard = document.getElementById("lockCard");
+
+  async function unlock(){
+    prepareAudio();
+    const code = codeInput.value.trim();
+    if(!code){lockError.textContent="ใส่รหัสก่อนน้า 💌";return}
+    const hash = await sha256(code);
+    if(hash !== PASSWORD_SHA256){
+      lockError.textContent="ยังไม่ใช่น้าาา ลองนึกถึงวันสำคัญของเธอดู 💗";
+      lockCard.classList.remove("shake"); void lockCard.offsetWidth; lockCard.classList.add("shake");
+      return;
+    }
+    lockError.textContent="";
+    startMusic();
+    burstAt(innerWidth/2,innerHeight/2,24);
+    setTimeout(()=>showScene("introScene"),260);
+  }
+  document.getElementById("unlockBtn").addEventListener("click",unlock);
+  codeInput.addEventListener("keydown",e=>{if(e.key==="Enter")unlock()});
+
+  // เพลงรักบรรเลงต้นฉบับ "Our Little Day"
+  // สร้างด้วย Web Audio API จึงไม่ต้องโหลด YouTube หรือ MP3 เพิ่ม
+  let audioCtx = null;
+  let masterGain = null;
+  let musicTimer = null;
+  let musicPlaying = false;
+
+  function prepareAudio(){
+    if(!audioCtx){
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if(!AudioCtx) return;
+      audioCtx = new AudioCtx();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = 0.085;
+      masterGain.connect(audioCtx.destination);
+    }
+    if(audioCtx.state === "suspended") audioCtx.resume();
+  }
+
+  function softNote(freq, start, duration, volume=.085, type="sine"){
+    if(!audioCtx || !masterGain) return;
+
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+
+    const t = audioCtx.currentTime + start;
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(volume, t + 0.06);
+    gain.gain.setValueAtTime(volume * .72, t + Math.max(.08, duration - .18));
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + duration);
+
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc.start(t);
+    osc.stop(t + duration + .05);
+  }
+
+  function playLovePhrase(){
+    if(!musicPlaying || !audioCtx) return;
+
+    // ทำนองหวาน ๆ แนว music-box
+    const melody = [
+      [523.25,0.00,.48],[659.25,.50,.48],[783.99,1.00,.72],
+      [659.25,1.76,.45],[698.46,2.24,.45],[783.99,2.72,.72],
+      [880.00,3.48,.48],[783.99,3.98,.48],[659.25,4.48,.72],
+      [587.33,5.24,.45],[659.25,5.72,.45],[523.25,6.20,.90],
+      [659.25,7.18,.45],[783.99,7.66,.48],[880.00,8.16,.72],
+      [783.99,8.92,.48],[698.46,9.42,.48],[659.25,9.92,.72],
+      [587.33,10.68,.46],[523.25,11.16,1.10]
+    ];
+
+    melody.forEach(([f,s,d]) => softNote(f,s,d,.11,"sine"));
+
+    // คอร์ดพื้นหลังเบา ๆ ให้ฟังนุ่มขึ้น
+    const chords = [
+      [[261.63,329.63,392.00],0.00,2.9],
+      [[220.00,261.63,329.63],3.00,2.9],
+      [[174.61,220.00,261.63],6.00,2.9],
+      [[196.00,246.94,293.66],9.00,2.9]
+    ];
+    chords.forEach(([notes,s,d])=>{
+      notes.forEach(f=>softNote(f,s,d,.025,"triangle"));
+    });
+  }
+
+  function startMusic(){
+    prepareAudio();
+    if(!audioCtx) return;
+
+    musicPlaying = true;
+    masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+    masterGain.gain.setTargetAtTime(.085, audioCtx.currentTime, .08);
+
+    const pill = document.getElementById("musicPill");
+    pill.style.display = "flex";
+    pill.textContent = "🎵 เพลงรัก: เปิดอยู่";
+
+    playLovePhrase();
+    clearInterval(musicTimer);
+    musicTimer = setInterval(playLovePhrase, 12400);
+  }
+
+  function stopMusic(){
+    if(!audioCtx || !masterGain) return;
+    musicPlaying = false;
+    clearInterval(musicTimer);
+    musicTimer = null;
+    masterGain.gain.cancelScheduledValues(audioCtx.currentTime);
+    masterGain.gain.setTargetAtTime(.0001, audioCtx.currentTime, .06);
+    document.getElementById("musicPill").textContent = "🔇 เพลงรัก: ปิดอยู่";
+  }
+
+  function toggleMusic(){
+    if(musicPlaying) stopMusic();
+    else startMusic();
+  }
+
+  const musicPill = document.getElementById("musicPill");
+  musicPill.addEventListener("click", toggleMusic);
+  musicPill.addEventListener("keydown", e=>{
+    if(e.key === "Enter" || e.key === " "){
+      e.preventDefault();
+      toggleMusic();
+    }
+  });
+
+  document.getElementById("letterBtn").addEventListener("click",()=>{
+    showScene("envelopeScene"); burstAt(innerWidth/2,innerHeight*.53,20);
+  });
+
+  const envelope = document.getElementById("envelope");
+  let envelopeOpened=false;
+  envelope.addEventListener("click",()=>{
+    if(envelopeOpened)return;
+    envelopeOpened=true; envelope.classList.add("open"); burstAt(innerWidth/2,innerHeight*.55,22);
+    setTimeout(()=>showScene("letterScene"),700);
+  });
+
+  document.getElementById("questionBtn").addEventListener("click",()=>{
+    showScene("questionScene"); burstAt(innerWidth/2,innerHeight*.48,22);
+  });
+
+  const noBtn=document.getElementById("noBtn");
+  const yesBtn=document.getElementById("yesBtn");
+  const tease=document.getElementById("tease");
+  let escapes=0;
+  const messages=[
+    "อุ๊ย กดไม่ทัน 😝",
+    "ปุ่มนี้แอบหนีเก่งนะ 😂",
+    "แน่ใจแล้วเหรอออ 🥺",
+    "ลองจับให้ได้ก่อนนน 😜",
+    "ปุ่มสีชมพูน่ากดกว่านะ 💖",
+    "หัวใจแอบเชียร์อีกปุ่มอยู่ 🫶",
+    "คิดใหม่ยังทันน้าา 🌷",
+    "สมเจตน์แอบลุ้นอยู่นะ 😳",
+    "โอเค ๆ หนีอีกนิดเดียว 💕",
+    "สุดท้ายก็กดปุ่มชมพูเถอะนะ 🥺💗"
+  ];
+
+  function moveNo(){
+    escapes++;
+
+    // ให้ปุ่ม “ยังไม่เอา” หนีเฉพาะภายในพื้นที่ปุ่มของการ์ดสีขาว
+    const zone = document.querySelector("#questionScene .button-zone");
+    noBtn.style.position = "absolute";
+    noBtn.style.transform = "none";
+
+    const m = 8;
+    const w = noBtn.offsetWidth;
+    const h = noBtn.offsetHeight;
+    const maxX = Math.max(m, zone.clientWidth - w - m);
+    const maxY = Math.max(m, zone.clientHeight - h - m);
+
+    // พยายามสุ่มตำแหน่งที่ไม่ทับปุ่ม “ได้สิ”
+    let x = m, y = m;
+    const yesRect = yesBtn.getBoundingClientRect();
+    const zoneRect = zone.getBoundingClientRect();
+
+    for(let i=0;i<12;i++){
+      const tryX = m + Math.random() * Math.max(1, maxX - m);
+      const tryY = m + Math.random() * Math.max(1, maxY - m);
+      const left = zoneRect.left + tryX;
+      const top = zoneRect.top + tryY;
+      const overlap = !(
+        left + w + 12 < yesRect.left ||
+        left - 12 > yesRect.right ||
+        top + h + 12 < yesRect.top ||
+        top - 12 > yesRect.bottom
+      );
+      if(!overlap || i === 11){
+        x = tryX;
+        y = tryY;
+        break;
+      }
+    }
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+    tease.textContent = messages[Math.min(escapes-1,messages.length-1)];
+
+    const scale = Math.min(1.22, 1 + escapes*.02);
+    yesBtn.style.transform = innerWidth<=620
+      ? `translateX(-50%) scale(${scale})`
+      : `translateX(-110%) scale(${scale})`;
+  }
+  noBtn.addEventListener("mouseenter",moveNo);
+  noBtn.addEventListener("mousedown",e=>{e.preventDefault();moveNo()});
+  noBtn.addEventListener("touchstart",e=>{e.preventDefault();moveNo()},{passive:false});
+  noBtn.addEventListener("click",e=>{e.preventDefault();moveNo()});
+
+  yesBtn.addEventListener("click",()=>{
+    showScene("successScene"); celebrate();
+  });
+
+  function floating(){
+    const el=document.createElement("div");el.className="floaty";
+    const a=["💗","💖","💕","🌸","🫧","✨","🩵","🤍"];
+    el.textContent=a[Math.floor(Math.random()*a.length)];
+    el.style.left=Math.random()*100+"vw";
+    el.style.fontSize=(15+Math.random()*22)+"px";
+    el.style.animationDuration=(6+Math.random()*5)+"s";
+    document.body.appendChild(el);setTimeout(()=>el.remove(),12000);
+  }
+  setInterval(floating,760);
+  for(let i=0;i<10;i++)setTimeout(floating,i*200);
+
+  function burstAt(x,y,n=20){
+    for(let i=0;i<n;i++){
+      const s=document.createElement("div");s.className="spark";
+      const a=Math.random()*Math.PI*2,d=45+Math.random()*90;
+      s.style.left=x+"px";s.style.top=y+"px";
+      s.style.setProperty("--x",Math.cos(a)*d+"px");
+      s.style.setProperty("--y",Math.sin(a)*d+"px");
+      document.body.appendChild(s);setTimeout(()=>s.remove(),1000);
+    }
+  }
+
+  function celebrate(){
+    const arr=["💖","💕","💗","🌸","🩵","✨","🥰","🤍"];
+    for(let i=0;i<100;i++){
+      const c=document.createElement("div");c.className="confetti";
+      c.textContent=arr[Math.floor(Math.random()*arr.length)];
+      c.style.left=Math.random()*100+"vw";c.style.fontSize=(14+Math.random()*22)+"px";
+      c.style.animationDuration=(2.5+Math.random()*2.5)+"s";
+      c.style.animationDelay=(Math.random()*1.15)+"s";
+      document.body.appendChild(c);setTimeout(()=>c.remove(),5800);
+    }
+    let count=0;
+    const t=setInterval(()=>{
+      burstAt(innerWidth*(.18+Math.random()*.64),innerHeight*(.20+Math.random()*.45),20);
+      if(++count>=10)clearInterval(t);
+    },250);
+  }
+</script>
+</body>
+</html>
